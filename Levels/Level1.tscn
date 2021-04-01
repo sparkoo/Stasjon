@@ -8,11 +8,11 @@
 
 [node name="DepotBlue" parent="Depots" index="0" instance=ExtResource( 2 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.25, 0 )
-name = "Henry"
+name = "Start"
 
 [node name="DepotBlue2" parent="Depots" index="1" instance=ExtResource( 2 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 0.25, 0 )
-name = "Proper"
+name = "End"
 
 [node name="TrainBlue" parent="Trains" index="0" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.3, 0 )
