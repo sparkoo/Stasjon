@@ -2,10 +2,12 @@ using Godot;
 using System;
 
 public class LevelTemplate : Node {
-
+  private Field field = new Field(4, 4);
+  private Godot.Collections.Array groundBlocks;
   private static readonly Random rnd = new Random(DateTime.Now.Millisecond);
 
   public override void _Ready() {
+    groundBlocks = GetNode("Field").GetChildren();
     randomizeGround();
   }
 
@@ -14,7 +16,6 @@ public class LevelTemplate : Node {
   }
 
   private void randomizeGround() {
-    var groundBlocks = GetNode("Field").GetChildren();
     foreach (var groundBlock in groundBlocks) {
       var mesh = (MeshInstance)groundBlock;
       // copy the material to be able to set different seeds
