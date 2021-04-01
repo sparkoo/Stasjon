@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 1, 0.1, 1 )
+
+[sub_resource type="OpenSimplexNoise" id=2]
+period = 0.1
+
+[sub_resource type="NoiseTexture" id=3]
+flags = 3
+width = 25
+height = 25
+as_normalmap = true
+bump_strength = 7.7
+noise = SubResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.0509804, 0.478431, 0.266667, 1 )
+roughness_texture = SubResource( 3 )
+roughness_texture_channel = 1
+
+[node name="GroundBlock" type="MeshInstance"]
+mesh = SubResource( 1 )
+material/0 = SubResource( 4 )
