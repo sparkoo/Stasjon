@@ -4,6 +4,8 @@
 [ext_resource path="res://Field/Tile.tscn" type="PackedScene" id=2]
 
 [node name="Level" instance=ExtResource( 1 )]
+cols = 4
+rows = 4
 
 [node name="Tile0" parent="Field" index="0" instance=ExtResource( 2 )]
 

@@ -1,5 +1,4 @@
 using Godot;
-using System;
 
 public class DepotTemplate : StaticBody, ClickableItem {
   public event ItemClicked objectClicked;
@@ -14,21 +13,14 @@ public class DepotTemplate : StaticBody, ClickableItem {
     this.Connect("input_event", this, nameof(clicked));
     uniqueMaterial();
   }
+
   private void clicked(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
-    // Replace with function body.
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        select(!selected);
         objectClicked?.Invoke(new PathElement(color));
-        // EmitSignal(nameof(ClickedSignal), new PathElement(color));
       }
     }
-  }
-
-  private void select(bool select) {
-    selected = select;
-    material.EmissionEnabled = selected;
   }
 
   private void uniqueMaterial() {
@@ -38,5 +30,15 @@ public class DepotTemplate : StaticBody, ClickableItem {
     MaterialUtils.setClickableEmission(material);
 
     mesh.SetSurfaceMaterial(0, material);
+  }
+
+  public void select() {
+    selected = true;
+    material.EmissionEnabled = selected;
+  }
+
+  public void cancelSelect() {
+    selected = false;
+    material.EmissionEnabled = selected;
   }
 }
