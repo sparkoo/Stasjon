@@ -5,6 +5,9 @@ public class DepotTemplate : StaticBody {
   private bool selected = false;
   private SpatialMaterial material;
 
+  [Signal]
+  public delegate void ClickedSignal();
+
   [Export]
   private string name = "";
   public override void _Ready() {
@@ -16,8 +19,10 @@ public class DepotTemplate : StaticBody {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        GD.Print("Clicked on ", this.name + " pico");
+        GD.Print(String.Format("Clicked on [{0}]", this.name));
         select(!selected);
+        GD.Print("Emitting signal");
+        EmitSignal(nameof(ClickedSignal));
       }
     }
   }

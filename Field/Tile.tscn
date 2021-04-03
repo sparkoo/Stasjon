@@ -1,5 +1,7 @@
 [gd_scene load_steps=6 format=2]
 
+[ext_resource path="res://Field/Tile.cs" type="Script" id=1]
+
 [sub_resource type="CubeMesh" id=1]
 size = Vector3( 1, 0.1, 1 )
 
@@ -19,17 +21,11 @@ albedo_color = Color( 0.0509804, 0.478431, 0.266667, 1 )
 roughness_texture = SubResource( 3 )
 roughness_texture_channel = 1
 
-[sub_resource type="CSharpScript" id=5]
-script/source = "using System;
-using Godot;
+[node name="Tile" type="Spatial"]
+script = ExtResource( 1 )
 
-public partial class GroundBlock : MeshInstance {
-  public override void _Ready() {
-    
-  }
-}"
-
-[node name="GroundBlock" type="MeshInstance"]
+[node name="TileMesh" type="MeshInstance" parent="."]
 mesh = SubResource( 1 )
 material/0 = SubResource( 4 )
-script = SubResource( 5 )
+
+[node name="Items" type="Node" parent="."]

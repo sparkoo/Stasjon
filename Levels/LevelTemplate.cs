@@ -2,13 +2,23 @@ using Godot;
 using System;
 
 public class LevelTemplate : Node {
-  private Field field = new Field(4, 4);
-  private Godot.Collections.Array groundBlocks;
+  private Godot.Collections.Array tiles;
   private static readonly Random rnd = new Random(DateTime.Now.Millisecond);
 
   public override void _Ready() {
-    groundBlocks = GetNode("Field").GetChildren();
+    tiles = GetNode("Field").GetChildren();
+    connectTileEvents();
     randomizeGround();
+  }
+
+  private void connectTileEvents() {
+    foreach (Node tile in tiles) {
+      tile.Connect("ClickedTile", this, nameof(clickedTile));
+    }
+  }
+
+  private void clickedTile(int tileIndex) {
+    GD.Print(String.Format("Level -> clicked on [{0}]", tileIndex));
   }
 
   public override void _Input(InputEvent @event) {
@@ -16,8 +26,8 @@ public class LevelTemplate : Node {
   }
 
   private void randomizeGround() {
-    foreach (var groundBlock in groundBlocks) {
-      var mesh = (MeshInstance)groundBlock;
+    foreach (Node tile in tiles) {
+      var mesh = (MeshInstance)tile.GetNode("TileMesh");
       // copy the material to be able to set different seeds
       var materialCopy = (SpatialMaterial)mesh.GetSurfaceMaterial(0).Duplicate(true);
 
