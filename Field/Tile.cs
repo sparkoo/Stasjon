@@ -1,11 +1,11 @@
 using System;
 using Godot;
 
-public partial class Tile : Spatial {
-  private int index;
+public partial class Tile : Spatial, ClickableItem {
 
-  [Signal]
-  public delegate void ClickedTile(int index);
+  public event ItemClicked objectClicked;
+
+  private int index;
 
   public override void _Ready() {
     index = determineIndex();
@@ -17,13 +17,13 @@ public partial class Tile : Spatial {
   }
 
   private void listenItems() {
-    foreach (Node item in GetNode("Items").GetChildren()) {
-      item.Connect("ClickedSignal", this, nameof(clickedOnObject));
+    foreach (ClickableItem item in GetNode("Items").GetChildren()) {
+      item.objectClicked += clickedOnObject;
     }
   }
 
-  private void clickedOnObject() {
-    GD.Print(String.Format("Received signal on [{0}]", index));
-    EmitSignal(nameof(ClickedTile), index);
+  private void clickedOnObject(PathElement pathElement) {
+    pathElement.index = index;
+    objectClicked?.Invoke(pathElement);
   }
 }

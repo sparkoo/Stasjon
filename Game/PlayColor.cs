@@ -1,0 +1,3 @@
+public enum PlayColor {
+  NONE, BLUE, RED, YELLOW, GREEN, ORANGE, CYAN, MAGENTA
+}

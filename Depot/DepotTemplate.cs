@@ -1,15 +1,15 @@
 using Godot;
 using System;
 
-public class DepotTemplate : StaticBody {
+public class DepotTemplate : StaticBody, ClickableItem {
+  public event ItemClicked objectClicked;
+
+  [Export] private string name = "";
+  [Export] private PlayColor color = PlayColor.NONE;
+
   private bool selected = false;
   private SpatialMaterial material;
 
-  [Signal]
-  public delegate void ClickedSignal();
-
-  [Export]
-  private string name = "";
   public override void _Ready() {
     this.Connect("input_event", this, nameof(clicked));
     uniqueMaterial();
@@ -19,10 +19,9 @@ public class DepotTemplate : StaticBody {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        GD.Print(String.Format("Clicked on [{0}]", this.name));
         select(!selected);
-        GD.Print("Emitting signal");
-        EmitSignal(nameof(ClickedSignal));
+        objectClicked?.Invoke(new PathElement(color));
+        // EmitSignal(nameof(ClickedSignal), new PathElement(color));
       }
     }
   }

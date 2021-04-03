@@ -12,13 +12,13 @@ public class LevelTemplate : Node {
   }
 
   private void connectTileEvents() {
-    foreach (Node tile in tiles) {
-      tile.Connect("ClickedTile", this, nameof(clickedTile));
+    foreach (ClickableItem tile in tiles) {
+      tile.objectClicked += clickedTile;
     }
   }
 
-  private void clickedTile(int tileIndex) {
-    GD.Print(String.Format("Level -> clicked on [{0}]", tileIndex));
+  private void clickedTile(PathElement pathElement) {
+    GD.Print(String.Format("Level -> clicked on [{0}]", pathElement));
   }
 
   public override void _Input(InputEvent @event) {
