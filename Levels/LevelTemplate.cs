@@ -36,7 +36,7 @@ public class LevelTemplate : Node {
     selected = pathElement.index;
     tiles[selected].select();
     var candidateTile = tiles[selected + 1];
-    if (candidateTile.nextCandidate()) {
+    if (candidateTile.nextCandidate(PlayColor.NONE)) {
       candidates.Add(candidateTile.index);
     }
   }

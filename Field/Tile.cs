@@ -4,15 +4,20 @@ using Godot;
 
 public partial class Tile : Spatial, ClickableItem {
   private static readonly Random rnd = new Random(DateTime.Now.Millisecond);
+  PackedScene rails = (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn");
 
   public event ItemClicked objectClicked;
 
   private SpatialMaterial material;
   public int index { get; private set; }
   private bool hasDepot;
+
   private bool candidate;
+  private PlayColor candidateColor = PlayColor.NONE;
 
   public override void _Ready() {
+    this.Connect("input_event", this, nameof(clicked));
+
     index = int.Parse(Name.Substring("Tile".Length));
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.objectClicked += clickedOnObject;
@@ -21,6 +26,20 @@ public partial class Tile : Spatial, ClickableItem {
       }
     }
     randomizeGround();
+  }
+
+  private void clicked(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
+    if (@event is InputEventMouseButton) {
+      var click = (InputEventMouseButton)@event;
+      if (click.Pressed) {
+        if (candidate) {
+          GD.Print("build next block at ", index);
+          this.GetNode("Items").AddChild(rails.Instance());
+          var pathElement = new PathElement(candidateColor, index);
+          clickedOnObject(pathElement);
+        }
+      }
+    }
   }
 
   private void clickedOnObject(PathElement pathElement) {
@@ -35,12 +54,14 @@ public partial class Tile : Spatial, ClickableItem {
 
   public void cancelCandidate() {
     candidate = false;
+    candidateColor = PlayColor.NONE;
     highlight(false);
   }
 
-  public Boolean nextCandidate() {
+  public Boolean nextCandidate(PlayColor color) {
     if (!hasDepot) {
       candidate = true;
+      candidateColor = color;
       highlight(true);
       return true;
     } else {

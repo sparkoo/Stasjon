@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://Field/Tile.cs" type="Script" id=1]
 
@@ -21,7 +21,10 @@ albedo_color = Color( 0.0509804, 0.478431, 0.266667, 1 )
 roughness_texture = SubResource( 3 )
 roughness_texture_channel = 1
 
-[node name="Tile" type="Spatial"]
+[sub_resource type="BoxShape" id=5]
+extents = Vector3( 0.5, 0.1, 0.5 )
+
+[node name="Tile" type="StaticBody"]
 script = ExtResource( 1 )
 
 [node name="TileMesh" type="MeshInstance" parent="."]
@@ -29,3 +32,6 @@ mesh = SubResource( 1 )
 material/0 = SubResource( 4 )
 
 [node name="Items" type="Node" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="."]
+shape = SubResource( 5 )

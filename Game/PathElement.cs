@@ -8,6 +8,10 @@ public class PathElement {
     this.color = color;
   }
 
+  public PathElement(PlayColor color, int index) {
+    this.color = color;
+  }
+
   public override string ToString() {
     return String.Format("PathElement[color: '{0}', index: '{1}']", color, index);
   }
