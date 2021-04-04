@@ -11,7 +11,7 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.5,
 name = "Start"
 
 [node name="DepotBlue" parent="Field/Tile3/Items" index="0" instance=ExtResource( 2 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 0.5, 0 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 0 )
 name = "End"
 
 [node name="TrainBlue" parent="Trains" index="0" instance=ExtResource( 3 )]
