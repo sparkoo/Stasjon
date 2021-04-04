@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=6 format=2]
 
 [sub_resource type="CapsuleShape" id=1]
 radius = 0.25
@@ -7,6 +7,29 @@ height = 0.25
 [sub_resource type="CapsuleMesh" id=2]
 radius = 0.25
 mid_height = 0.25
+
+[sub_resource type="ParticlesMaterial" id=3]
+lifetime_randomness = 0.5
+direction = Vector3( 0, 1, 0 )
+spread = 15.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 1.0
+initial_velocity_random = 0.25
+linear_accel = -0.5
+linear_accel_random = 0.25
+scale = 4.0
+scale_random = 0.5
+
+[sub_resource type="SpatialMaterial" id=4]
+flags_transparent = true
+albedo_color = Color( 0.403922, 0.403922, 0.403922, 0.776471 )
+
+[sub_resource type="SphereMesh" id=5]
+material = SubResource( 4 )
+radius = 0.05
+height = 0.1
+radial_segments = 8
+rings = 4
 
 [node name="TrainTemplate" type="KinematicBody"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0 )
@@ -17,3 +40,10 @@ shape = SubResource( 1 )
 [node name="MeshInstance" type="MeshInstance" parent="."]
 mesh = SubResource( 2 )
 material/0 = null
+
+[node name="Particles" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.234341, 0.17062 )
+emitting = false
+amount = 16
+process_material = SubResource( 3 )
+draw_pass_1 = SubResource( 5 )
