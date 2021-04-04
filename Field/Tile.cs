@@ -21,6 +21,7 @@ public partial class Tile : Spatial, ClickableItem {
     index = int.Parse(Name.Substring("Tile".Length));
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.objectClicked += clickedOnObject;
+      registerListener(item);
       if (item is DepotTemplate) {
         hasDepot = true;
       }
@@ -34,11 +35,21 @@ public partial class Tile : Spatial, ClickableItem {
       if (click.Pressed) {
         if (candidate) {
           GD.Print("build next block at ", index);
-          this.GetNode("Items").AddChild(rails.Instance());
+          var newRails = rails.Instance();
+          this.GetNode("Items").AddChild(newRails);
+          registerListener(newRails);
           var pathElement = new PathElement(candidateColor, index);
           clickedOnObject(pathElement);
         }
       }
+    }
+  }
+
+  private void registerListener(object o) {
+    if (o is ClickableItem) {
+      ((ClickableItem)o).objectClicked += clickedOnObject;
+    } else {
+      GD.PushWarning(String.Format("Trying to subscribe to object that is no ClickableItem. '{0}', type '{1}'", o, o.GetType()));
     }
   }
 

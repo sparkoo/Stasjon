@@ -1,6 +1,14 @@
 [gd_scene load_steps=2 format=2]
 
-[ext_resource path="res://Rails/RailTemplate.cs" type="Script" id=1]
+[sub_resource type="CSharpScript" id=1]
+script/source = "using System;
+using Godot;
+
+public partial class RailTemplate : Node {
+  public override void _Ready() {
+
+  }
+}"
 
 [node name="Rail" type="Node"]
-script = ExtResource( 1 )
+script = SubResource( 1 )
