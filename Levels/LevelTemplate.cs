@@ -35,13 +35,43 @@ public class LevelTemplate : Node {
 
     selected = pathElement.index;
     tiles[selected].select();
-    var candidateTile = tiles[selected + 1];
-    if (candidateTile.nextCandidate(PlayColor.NONE)) {
-      candidates.Add(candidateTile.index);
+    foreach (int i in nextCandidates(selected)) {
+      var candidateTile = tiles[i];
+      if (candidateTile.nextCandidate(PlayColor.NONE)) {
+        candidates.Add(candidateTile.index);
+      }
     }
+  }
+
+  private IList<int> nextCandidates(int i) {
+    var nextCandidates = new List<int>();
+
+    GD.Print(String.Format("testing '{0}', '{1}'", i - 1, cols));
+    if (i - 1 >= 0 && (i) % cols != 0) {
+      nextCandidates.Add(i - 1);
+    }
+
+    GD.Print(String.Format("testing '{0}', '{1}'", i + 1, cols));
+    if (i + 1 < cols * rows && (i + 1) % cols != 0) {
+      nextCandidates.Add(i + 1);
+    }
+
+    if (i + cols < N()) {
+      nextCandidates.Add(i + cols);
+    }
+
+    if (i - cols >= 0) {
+      nextCandidates.Add(i - cols);
+    }
+
+    return nextCandidates;
   }
 
   public override void _Input(InputEvent @event) {
     base._Input(@event);
+  }
+
+  private int N() {
+    return cols * rows;
   }
 }
