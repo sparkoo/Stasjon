@@ -10,7 +10,7 @@ public partial class Tile : Spatial, ClickableItem {
 
   private SpatialMaterial material;
   public int index { get; private set; }
-  private bool hasDepot;
+  public bool hasDepot { get; set; }
 
   private bool candidate;
   private PlayColor candidateColor = PlayColor.NONE;
@@ -38,7 +38,7 @@ public partial class Tile : Spatial, ClickableItem {
           var newRails = rails.Instance();
           this.GetNode("Items").AddChild(newRails);
           registerListener(newRails);
-          var pathElement = new PathElement(candidateColor, index);
+          var pathElement = new PathBuildElement(candidateColor, index);
           clickedOnObject(pathElement);
         }
       }
@@ -53,9 +53,8 @@ public partial class Tile : Spatial, ClickableItem {
     }
   }
 
-  private void clickedOnObject(PathElement pathElement) {
-    pathElement.index = index;
-    objectClicked?.Invoke(pathElement);
+  private void clickedOnObject(PathBuildElement pathElement) {
+    objectClicked?.Invoke(new PathBuildElement(pathElement.color, index));
     highlight(!material.EmissionEnabled);
   }
 

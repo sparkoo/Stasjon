@@ -1,6 +1,6 @@
 
 
-public delegate void ItemClicked(PathElement pathElement);
+public delegate void ItemClicked(PathBuildElement pathElement);
 
 public interface ClickableItem {
   event ItemClicked objectClicked;

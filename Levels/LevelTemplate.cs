@@ -6,6 +6,8 @@ public class LevelTemplate : Node {
   [Export] private int cols;
   [Export] private int rows;
 
+  private IDictionary<PlayColor, Path> paths = new Dictionary<PlayColor, Path>();
+
   private int selected = 0;
   private IList<int> candidates = new List<int>();
 
@@ -16,6 +18,7 @@ public class LevelTemplate : Node {
       tiles.Add(tile);
     }
     connectTileEvents();
+    initPaths();
   }
 
   private void connectTileEvents() {
@@ -24,7 +27,15 @@ public class LevelTemplate : Node {
     }
   }
 
-  private void clickedTile(PathElement pathElement) {
+  private void initPaths() {
+    foreach (Tile tile in tiles) {
+      if (tile.hasDepot) {
+        // init or add path
+      }
+    }
+  }
+
+  private void clickedTile(PathBuildElement pathElement) {
     GD.Print(String.Format("Level -> clicked on [{0}]", pathElement));
 
     tiles[selected]?.cancelSelect();

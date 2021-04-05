@@ -13,7 +13,7 @@ public partial class RailsTemplate : StaticBody, ClickableItem {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        objectClicked?.Invoke(new PathElement(PlayColor.BLUE));
+        objectClicked?.Invoke(new PathBuildElement(PlayColor.BLUE, -1));
       }
     }
   }
