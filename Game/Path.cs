@@ -22,11 +22,22 @@ public class Path {
     current.next = new PathElement(to, obj);
   }
 
-  private void cleanPath(PathElement pathElement) {
+  public void cleanPath(PathElement pathElement) {
     var next = pathElement.next;
     pathElement.item.QueueFree();
     if (next != null) {
       cleanPath(next);
+    }
+  }
+
+  public void cleanPath(int i) {
+    var current = startDepot;
+    while (current.index != i && current.next != null) {
+      current = current.next;
+    }
+    if (current.next != null) {
+      cleanPath(current.next);
+      current.next = null;
     }
   }
 

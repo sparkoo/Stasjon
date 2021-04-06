@@ -79,6 +79,7 @@ public class LevelTemplate : Node {
 
         tiles[pathElement.index.Value].select();
         selected = pathElement.index;
+        paths[pathElement.color.Value].cleanPath(selected.Value);
         selectCandidates(selected.Value);
       } else {
         // is it next candidate ?
@@ -94,7 +95,7 @@ public class LevelTemplate : Node {
               var newRails = (RailsTemplate)railsRes[color.Value].Instance();
               tiles[c].placeItem(newRails);
               paths[color.Value].add(selected.Value, c, newRails);
-              // selected = c;
+              clickedTile(new PathBuildElement(color.Value, c));
             } else {
               throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
             }

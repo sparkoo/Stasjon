@@ -15,7 +15,7 @@ public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        objectClicked?.Invoke(new PathBuildElement(PlayColor.BLUE, null));
+        objectClicked?.Invoke(new PathBuildElement(color, null));
       }
     }
   }
