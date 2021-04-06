@@ -1,15 +1,18 @@
-using System;
-
 public class PathBuildElement {
-  public readonly int index;
-  public readonly PlayColor color;
+  public int index { get; }
+  public PlayColor color { get; }
+
+  public PathBuildElement(PlayColor color) {
+    this.index = -1;
+    this.color = color;
+  }
 
   public PathBuildElement(PlayColor color, int index) {
-    this.color = color;
     this.index = index;
+    this.color = color;
   }
 
   public override string ToString() {
-    return String.Format("PathElement[color: '{0}', index: '{1}']", color, index);
+    return string.Format("PathBuildElement[color: '{0}', index: '{1}']", color, index);
   }
 }

@@ -4,7 +4,8 @@ public class DepotTemplate : StaticBody, ClickableItem {
   public event ItemClicked objectClicked;
 
   [Export] private string name = "";
-  [Export] private PlayColor color = PlayColor.NONE;
+  [Export] public PlayColor color { get; set; } = PlayColor.NONE;
+  [Export] public DepotType depotType { get; private set; } = DepotType.START;
 
   private bool selected = false;
   private SpatialMaterial material;
@@ -18,7 +19,7 @@ public class DepotTemplate : StaticBody, ClickableItem {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        objectClicked?.Invoke(new PathBuildElement(color, -1));
+        objectClicked?.Invoke(new PathBuildElement(color));
       }
     }
   }

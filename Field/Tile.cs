@@ -4,13 +4,14 @@ using Godot;
 
 public partial class Tile : Spatial, ClickableItem {
   private static readonly Random rnd = new Random(DateTime.Now.Millisecond);
-  PackedScene rails = (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn");
+  PackedScene railsRes = (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn");
 
   public event ItemClicked objectClicked;
 
   private SpatialMaterial material;
   public int index { get; private set; }
-  public bool hasDepot { get; set; }
+  public bool hasDepot { get { return depot != null; } }
+  public DepotTemplate depot { get; private set; }
 
   private bool candidate;
   private PlayColor candidateColor = PlayColor.NONE;
@@ -22,8 +23,10 @@ public partial class Tile : Spatial, ClickableItem {
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.objectClicked += clickedOnObject;
       registerListener(item);
-      if (item is DepotTemplate) {
-        hasDepot = true;
+
+      var depotMaybe = item as DepotTemplate;
+      if (depotMaybe != null) {
+        this.depot = depotMaybe;
       }
     }
     randomizeGround();
@@ -35,7 +38,7 @@ public partial class Tile : Spatial, ClickableItem {
       if (click.Pressed) {
         if (candidate) {
           GD.Print("build next block at ", index);
-          var newRails = rails.Instance();
+          var newRails = railsRes.Instance();
           this.GetNode("Items").AddChild(newRails);
           registerListener(newRails);
           var pathElement = new PathBuildElement(candidateColor, index);
@@ -104,5 +107,9 @@ public partial class Tile : Spatial, ClickableItem {
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.cancelSelect();
     }
+  }
+
+  public Godot.Collections.Array getItems() {
+    return GetNode("Items").GetChildren();
   }
 }

@@ -28,10 +28,36 @@ public class LevelTemplate : Node {
   }
 
   private void initPaths() {
+    // go through all tiles
     foreach (Tile tile in tiles) {
+      // for those who has depot
       if (tile.hasDepot) {
-        // init or add path
+        DepotTemplate depot = tile.depot;
+        var color = depot.color;
+        PathElement newPathElement = new PathElement(tile.index, depot, null);
+
+        // create new Path or get existing one, based on color
+        Path path;
+        var hasPath = paths.TryGetValue(color, out path);
+        if (!hasPath) {
+          path = new Path(color);
+          paths.Add(color, path);
+        }
+
+        // write depot to the path
+        if (depot.depotType == DepotType.START) {
+          path.startDepot = newPathElement;
+        } else if (depot.depotType == DepotType.END) {
+          path.endDepot = newPathElement;
+        } else {
+          throw new Exception(String.Format("I don't know this depot type '{0}'.", depot.depotType));
+        }
       }
+    }
+
+    GD.Print("paths initialized");
+    foreach (Path p in paths.Values) {
+      GD.Print(p.ToString());
     }
   }
 

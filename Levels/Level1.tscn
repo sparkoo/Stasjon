@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Levels/Level4x4.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Depot/DepotBlue.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Trains/TrainBlue.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Depot/DepotRed.tscn" type="PackedScene" id=4]
 
 [node name="Level" instance=ExtResource( 1 )]
 
@@ -12,7 +13,15 @@ name = "Start"
 
 [node name="DepotBlue" parent="Field/Tile3/Items" index="0" instance=ExtResource( 2 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 0 )
+depotType = 1
 name = "End"
+
+[node name="DepotRed" parent="Field/Tile4/Items" index="0" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.5, -5.96046e-08 )
+depotType = 1
+
+[node name="DepotRed" parent="Field/Tile7/Items" index="0" instance=ExtResource( 4 )]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 0 )
 
 [node name="TrainBlue" parent="Trains" index="0" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.3, 0 )
