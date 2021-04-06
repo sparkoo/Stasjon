@@ -8,7 +8,7 @@ public class LevelTemplate : Node {
 
   private IDictionary<PlayColor, Path> paths = new Dictionary<PlayColor, Path>();
 
-  private int selected = 0;
+  private int? selected = null;
   private IList<int> candidates = new List<int>();
 
   private Godot.Collections.Array<Tile> tiles = new Godot.Collections.Array<Tile>();
@@ -62,33 +62,57 @@ public class LevelTemplate : Node {
   }
 
   private void clickedTile(PathBuildElement pathElement) {
-    GD.Print(String.Format("Level -> clicked on [{0}]", pathElement));
+    GD.Print(String.Format("Level -> clicked on [{0}] selected: '{1}'", pathElement, selected));
 
-    tiles[selected]?.cancelSelect();
-    foreach (int candidateIndex in candidates) {
-      tiles[candidateIndex].cancelCandidate();
-    }
-    candidates.Clear();
-
-    selected = pathElement.index;
-    tiles[selected].select();
-    foreach (int i in nextCandidates(selected)) {
-      var candidateTile = tiles[i];
-      if (candidateTile.nextCandidate(PlayColor.NONE)) {
-        candidates.Add(candidateTile.index);
+    // do we have anything selected?
+    if (selected == null) {
+      if (pathElement.color.HasValue) {
+        tiles[pathElement.index.Value].select();
+        selected = pathElement.index;
+        selectCandidates(selected.Value);
       }
+    } else {
+      // did we clicked on item?
+      if (pathElement.color.HasValue) {
+        tiles[selected.Value].cancelSelect();
+        cancelSelectCandidates(selected.Value);
+
+        tiles[pathElement.index.Value].select();
+        selected = pathElement.index;
+        selectCandidates(selected.Value);
+      } else {
+        // is it next candidate ?
+        GD.Print("clicked on empty tile");
+        foreach (int c in nextCandidates(selected.Value)) {
+          if (c == pathElement.index) {
+            GD.Print("clicked on candidate");
+            // get the color of selected
+            // build from selected to pathElement.index
+          }
+        }
+      }
+    }
+  }
+
+  private void selectCandidates(int i) {
+    foreach (int candidateIndex in nextCandidates(i)) {
+      tiles[candidateIndex].select();
+    }
+  }
+
+  private void cancelSelectCandidates(int i) {
+    foreach (int candidateIndex in nextCandidates(i)) {
+      tiles[candidateIndex].cancelSelect();
     }
   }
 
   private IList<int> nextCandidates(int i) {
     var nextCandidates = new List<int>();
 
-    GD.Print(String.Format("testing '{0}', '{1}'", i - 1, cols));
     if (i - 1 >= 0 && (i) % cols != 0) {
       nextCandidates.Add(i - 1);
     }
 
-    GD.Print(String.Format("testing '{0}', '{1}'", i + 1, cols));
     if (i + 1 < cols * rows && (i + 1) % cols != 0) {
       nextCandidates.Add(i + 1);
     }

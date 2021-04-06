@@ -1,13 +1,8 @@
 public class PathBuildElement {
-  public int index { get; }
-  public PlayColor color { get; }
+  public int? index { get; }
+  public PlayColor? color { get; }
 
-  public PathBuildElement(PlayColor color) {
-    this.index = -1;
-    this.color = color;
-  }
-
-  public PathBuildElement(PlayColor color, int index) {
+  public PathBuildElement(PlayColor? color, int? index) {
     this.index = index;
     this.color = color;
   }

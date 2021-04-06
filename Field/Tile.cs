@@ -21,7 +21,6 @@ public partial class Tile : Spatial, ClickableItem {
 
     index = int.Parse(Name.Substring("Tile".Length));
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
-      item.objectClicked += clickedOnObject;
       registerListener(item);
 
       var depotMaybe = item as DepotTemplate;
@@ -36,6 +35,7 @@ public partial class Tile : Spatial, ClickableItem {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
+        objectClicked?.Invoke(new PathBuildElement(null, index));
         if (candidate) {
           GD.Print("build next block at ", index);
           var newRails = railsRes.Instance();
@@ -57,6 +57,7 @@ public partial class Tile : Spatial, ClickableItem {
   }
 
   private void clickedOnObject(PathBuildElement pathElement) {
+    GD.Print("invoke Tile.clickedOnObject");
     objectClicked?.Invoke(new PathBuildElement(pathElement.color, index));
     highlight(!material.EmissionEnabled);
   }
@@ -69,17 +70,6 @@ public partial class Tile : Spatial, ClickableItem {
     candidate = false;
     candidateColor = PlayColor.NONE;
     highlight(false);
-  }
-
-  public Boolean nextCandidate(PlayColor color) {
-    if (!hasDepot) {
-      candidate = true;
-      candidateColor = color;
-      highlight(true);
-      return true;
-    } else {
-      return false;
-    }
   }
 
   private void randomizeGround() {
