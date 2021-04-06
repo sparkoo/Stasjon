@@ -19,7 +19,9 @@ public class DepotTemplate : StaticBody, ClickableItem {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        objectClicked?.Invoke(new PathBuildElement(color));
+        if (depotType == DepotType.START) {
+          objectClicked?.Invoke(new PathBuildElement(color));
+        }
       }
     }
   }
