@@ -1,16 +1,14 @@
 public class PathElement {
   public int index { get; }
-  public DepotTemplate depot { get; }
-  public RailsTemplate rail { get; }
+  public PlayObject item { get; }
   public PathElement next { get; set; }
 
-  public PathElement(int index, DepotTemplate depot, RailsTemplate rail) {
+  public PathElement(int index, PlayObject item) {
     this.index = index;
-    this.depot = depot;
-    this.rail = rail;
+    this.item = item;
   }
 
   public override string ToString() {
-    return string.Format("PathElement[index: '{0}', depot: '{1}', rail: '{2}', next: '{3}']", index, depot, rail, next != null);
+    return string.Format("PathElement[index: '{0}', item: '{1}', next: '{2}']", index, item, next);
   }
 }

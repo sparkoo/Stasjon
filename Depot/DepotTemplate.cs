@@ -1,6 +1,6 @@
 using Godot;
 
-public class DepotTemplate : StaticBody, ClickableItem {
+public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
   public event ItemClicked objectClicked;
 
   [Export] private string name = "";
@@ -44,5 +44,9 @@ public class DepotTemplate : StaticBody, ClickableItem {
   public void cancelSelect() {
     selected = false;
     material.EmissionEnabled = selected;
+  }
+
+  public PlayColor getColor() {
+    return color;
   }
 }

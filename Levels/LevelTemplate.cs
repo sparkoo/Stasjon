@@ -6,10 +6,14 @@ public class LevelTemplate : Node {
   [Export] private int cols;
   [Export] private int rows;
 
+  Dictionary<PlayColor, PackedScene> railsRes = new Dictionary<PlayColor, PackedScene>() {
+    {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn")},
+    {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsStraightRed.tscn")}
+  };
+
   private IDictionary<PlayColor, Path> paths = new Dictionary<PlayColor, Path>();
 
   private int? selected = null;
-  private IList<int> candidates = new List<int>();
 
   private Godot.Collections.Array<Tile> tiles = new Godot.Collections.Array<Tile>();
 
@@ -34,7 +38,7 @@ public class LevelTemplate : Node {
       if (tile.hasDepot) {
         DepotTemplate depot = tile.depot;
         var color = depot.color;
-        PathElement newPathElement = new PathElement(tile.index, depot, null);
+        PathElement newPathElement = new PathElement(tile.index, depot);
 
         // create new Path or get existing one, based on color
         Path path;
@@ -54,11 +58,7 @@ public class LevelTemplate : Node {
         }
       }
     }
-
-    GD.Print("paths initialized");
-    foreach (Path p in paths.Values) {
-      GD.Print(p.ToString());
-    }
+    printPaths();
   }
 
   private void clickedTile(PathBuildElement pathElement) {
@@ -87,10 +87,28 @@ public class LevelTemplate : Node {
           if (c == pathElement.index) {
             GD.Print("clicked on candidate");
             // get the color of selected
-            // build from selected to pathElement.index
+            var color = tiles[selected.Value].getItemColor();
+            if (color != null) {
+
+              GD.Print("build next block at ", c);
+              var newRails = (RailsTemplate)railsRes[color.Value].Instance();
+              tiles[c].placeItem(newRails);
+              paths[color.Value].add(selected.Value, c, newRails);
+              // selected = c;
+            } else {
+              throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
+            }
           }
         }
       }
+    }
+    printPaths();
+  }
+
+  private void printPaths() {
+    GD.Print("paths");
+    foreach (Path p in paths.Values) {
+      GD.Print(p.ToString());
     }
   }
 
@@ -126,10 +144,6 @@ public class LevelTemplate : Node {
     }
 
     return nextCandidates;
-  }
-
-  public override void _Input(InputEvent @event) {
-    base._Input(@event);
   }
 
   private int N() {

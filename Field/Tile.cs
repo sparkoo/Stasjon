@@ -4,7 +4,6 @@ using Godot;
 
 public partial class Tile : Spatial, ClickableItem {
   private static readonly Random rnd = new Random(DateTime.Now.Millisecond);
-  PackedScene railsRes = (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn");
 
   public event ItemClicked objectClicked;
 
@@ -12,9 +11,6 @@ public partial class Tile : Spatial, ClickableItem {
   public int index { get; private set; }
   public bool hasDepot { get { return depot != null; } }
   public DepotTemplate depot { get; private set; }
-
-  private bool candidate;
-  private PlayColor candidateColor = PlayColor.NONE;
 
   public override void _Ready() {
     this.Connect("input_event", this, nameof(clicked));
@@ -36,16 +32,13 @@ public partial class Tile : Spatial, ClickableItem {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
         objectClicked?.Invoke(new PathBuildElement(null, index));
-        if (candidate) {
-          GD.Print("build next block at ", index);
-          var newRails = railsRes.Instance();
-          this.GetNode("Items").AddChild(newRails);
-          registerListener(newRails);
-          var pathElement = new PathBuildElement(candidateColor, index);
-          clickedOnObject(pathElement);
-        }
       }
     }
+  }
+
+  public void placeItem(Node o) {
+    GetNode("Items").AddChild(o);
+    registerListener(o);
   }
 
   private void registerListener(object o) {
@@ -64,12 +57,6 @@ public partial class Tile : Spatial, ClickableItem {
 
   private void highlight(bool highlight) {
     material.EmissionEnabled = highlight;
-  }
-
-  public void cancelCandidate() {
-    candidate = false;
-    candidateColor = PlayColor.NONE;
-    highlight(false);
   }
 
   private void randomizeGround() {
@@ -99,7 +86,11 @@ public partial class Tile : Spatial, ClickableItem {
     }
   }
 
-  public Godot.Collections.Array getItems() {
-    return GetNode("Items").GetChildren();
+  public PlayColor? getItemColor() {
+    foreach (PlayObject item in GetNode("Items").GetChildren()) {
+      return item.getColor();
+    }
+
+    return null;
   }
 }

@@ -1,8 +1,10 @@
 using System;
 using Godot;
 
-public partial class RailsTemplate : StaticBody, ClickableItem {
+public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
   public event ItemClicked objectClicked;
+
+  [Export] public PlayColor color { get; set; } = PlayColor.NONE;
 
   public override void _Ready() {
     this.Connect("input_event", this, nameof(clicked));
@@ -24,5 +26,9 @@ public partial class RailsTemplate : StaticBody, ClickableItem {
 
   public void select() {
     GD.Print("select rail");
+  }
+
+  public PlayColor getColor() {
+    return color;
   }
 }
