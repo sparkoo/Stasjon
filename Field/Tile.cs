@@ -72,8 +72,8 @@ public partial class Tile : Spatial, ClickableItem {
 
   }
 
-  public void select() {
-    highlight(true);
+  public void select(bool highlightThis = true) {
+    highlight(highlightThis);
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.select();
     }

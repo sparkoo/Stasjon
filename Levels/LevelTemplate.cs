@@ -95,7 +95,14 @@ public class LevelTemplate : Node {
               var newRails = (RailsTemplate)railsRes[color.Value].Instance();
               tiles[c].placeItem(newRails);
               paths[color.Value].add(selected.Value, c, newRails);
-              clickedTile(new PathBuildElement(color.Value, c));
+
+
+              tiles[selected.Value].cancelSelect();
+              cancelSelectCandidates(selected.Value);
+
+              selected = c;
+              tiles[selected.Value].select(false);
+              selectCandidates(selected.Value);
             } else {
               throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
             }

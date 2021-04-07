@@ -26,8 +26,8 @@ public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
     material.EmissionEnabled = false;
   }
 
-  public void select() {
-    material.EmissionEnabled = true;
+  public void select(bool highlightThis = true) {
+    material.EmissionEnabled = highlightThis;
   }
 
   private void uniqueMaterial() {

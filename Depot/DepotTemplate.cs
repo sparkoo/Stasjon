@@ -27,7 +27,7 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
     }
   }
 
-  public void select() {
+  public void select(bool highlightThis = true) {
     selected = true;
     material.EmissionEnabled = selected;
   }
