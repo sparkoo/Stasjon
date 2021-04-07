@@ -6,9 +6,11 @@ public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
 
   [Export] public PlayColor color { get; set; } = PlayColor.NONE;
 
+  private SpatialMaterial material;
+
   public override void _Ready() {
     this.Connect("input_event", this, nameof(clicked));
-    // uniqueMaterial();
+    MaterialUtils.uniqueMaterialWithClickableEmission((MeshInstance)GetNode("RailsMesh"), out material);
   }
 
   private void clicked(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
@@ -21,11 +23,20 @@ public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
   }
 
   public void cancelSelect() {
-    GD.Print("unselect rail");
+    material.EmissionEnabled = false;
   }
 
   public void select() {
-    GD.Print("select rail");
+    material.EmissionEnabled = true;
+  }
+
+  private void uniqueMaterial() {
+    var mesh = (MeshInstance)GetNode("DepotMesh");
+    // copy the material to be able to set different seeds
+    material = (SpatialMaterial)mesh.GetSurfaceMaterial(0).Duplicate(true);
+    MaterialUtils.setClickableEmission(material);
+
+    mesh.SetSurfaceMaterial(0, material);
   }
 
   public PlayColor getColor() {

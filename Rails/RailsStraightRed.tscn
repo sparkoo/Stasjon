@@ -8,5 +8,5 @@ albedo_color = Color( 1, 0, 0, 1 )
 [node name="RailsStraightRed" instance=ExtResource( 1 )]
 color = 2
 
-[node name="MeshInstance" parent="." index="1"]
+[node name="RailsMesh" parent="." index="1"]
 material/0 = SubResource( 1 )

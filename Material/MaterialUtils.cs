@@ -8,4 +8,12 @@ public class MaterialUtils {
     material.EmissionOnUv2 = false;
     return material;
   }
+
+  public static void uniqueMaterialWithClickableEmission(MeshInstance mesh, out SpatialMaterial material) {
+    // copy the material to be able to set different seeds
+    material = (SpatialMaterial)mesh.GetSurfaceMaterial(0).Duplicate(true);
+    MaterialUtils.setClickableEmission(material);
+
+    mesh.SetSurfaceMaterial(0, material);
+  }
 }

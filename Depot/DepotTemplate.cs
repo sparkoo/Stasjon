@@ -12,7 +12,7 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
 
   public override void _Ready() {
     this.Connect("input_event", this, nameof(clicked));
-    uniqueMaterial();
+    MaterialUtils.uniqueMaterialWithClickableEmission((MeshInstance)GetNode("DepotMesh"), out material);
   }
 
   private void clicked(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
@@ -25,15 +25,6 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
         }
       }
     }
-  }
-
-  private void uniqueMaterial() {
-    var mesh = (MeshInstance)GetNode("DepotMesh");
-    // copy the material to be able to set different seeds
-    material = (SpatialMaterial)mesh.GetSurfaceMaterial(0).Duplicate(true);
-    MaterialUtils.setClickableEmission(material);
-
-    mesh.SetSurfaceMaterial(0, material);
   }
 
   public void select() {
