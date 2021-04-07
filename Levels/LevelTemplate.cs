@@ -72,8 +72,35 @@ public class LevelTemplate : Node {
         selectCandidates(selected.Value);
       }
     } else {
-      // did we clicked on item?
-      if (pathElement.color.HasValue) {
+
+      var clickedIndex = clickedOnCandidate(pathElement.index.Value);
+
+      if (clickedIndex.HasValue) {
+        GD.Print("clicked on candidate");
+        var originalColor = tiles[clickedIndex.Value].getItemColor();
+        if (originalColor.HasValue) {
+          paths[originalColor.Value].cleanPathIncluding(clickedIndex.Value);
+        }
+
+        // get the color of selected
+        var color = tiles[selected.Value].getItemColor();
+        if (color != null) {
+          GD.Print("build next block at ", clickedIndex);
+          var newRails = (RailsTemplate)railsRes[color.Value].Instance();
+          tiles[clickedIndex.Value].placeItem(newRails);
+          paths[color.Value].add(selected.Value, clickedIndex.Value, newRails);
+
+
+          tiles[selected.Value].cancelSelect();
+          cancelSelectCandidates(selected.Value);
+
+          selected = clickedIndex;
+          tiles[selected.Value].select(false);
+          selectCandidates(selected.Value);
+        } else {
+          throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
+        }
+      } else if (pathElement.color.HasValue) {  // clicked on new item
         tiles[selected.Value].cancelSelect();
         cancelSelectCandidates(selected.Value);
 
@@ -81,36 +108,19 @@ public class LevelTemplate : Node {
         selected = pathElement.index;
         paths[pathElement.color.Value].cleanPath(selected.Value);
         selectCandidates(selected.Value);
-      } else {
-        // is it next candidate ?
-        GD.Print("clicked on empty tile");
-        foreach (int c in nextCandidates(selected.Value)) {
-          if (c == pathElement.index) {
-            GD.Print("clicked on candidate");
-            // get the color of selected
-            var color = tiles[selected.Value].getItemColor();
-            if (color != null) {
-
-              GD.Print("build next block at ", c);
-              var newRails = (RailsTemplate)railsRes[color.Value].Instance();
-              tiles[c].placeItem(newRails);
-              paths[color.Value].add(selected.Value, c, newRails);
-
-
-              tiles[selected.Value].cancelSelect();
-              cancelSelectCandidates(selected.Value);
-
-              selected = c;
-              tiles[selected.Value].select(false);
-              selectCandidates(selected.Value);
-            } else {
-              throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
-            }
-          }
-        }
       }
     }
     printPaths();
+  }
+
+  private int? clickedOnCandidate(int clickedIndex) {
+    foreach (int c in nextCandidates(selected.Value)) {
+      if (c == clickedIndex) {
+        return c;
+      }
+    }
+
+    return null;
   }
 
   private void printPaths() {
@@ -135,19 +145,19 @@ public class LevelTemplate : Node {
   private IList<int> nextCandidates(int i) {
     var nextCandidates = new List<int>();
 
-    if (i - 1 >= 0 && (i) % cols != 0) {
+    if (i - 1 >= 0 && (i) % cols != 0 && !tiles[i - 1].hasDepot) {
       nextCandidates.Add(i - 1);
     }
 
-    if (i + 1 < cols * rows && (i + 1) % cols != 0) {
+    if (i + 1 < cols * rows && (i + 1) % cols != 0 && !tiles[i + 1].hasDepot) {
       nextCandidates.Add(i + 1);
     }
 
-    if (i + cols < N()) {
+    if (i + cols < N() && !tiles[i + cols].hasDepot) {
       nextCandidates.Add(i + cols);
     }
 
-    if (i - cols >= 0) {
+    if (i - cols >= 0 && !tiles[i - cols].hasDepot) {
       nextCandidates.Add(i - cols);
     }
 

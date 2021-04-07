@@ -41,6 +41,17 @@ public class Path {
     }
   }
 
+  public void cleanPathIncluding(int i) {
+    var current = startDepot;
+    while (current.next != null && current.next.index != i) {
+      current = current.next;
+    }
+    if (current.next != null) {
+      cleanPath(current.next);
+      current.next = null;
+    }
+  }
+
   public override string ToString() {
     IList<int> p = new List<int>();
     var current = startDepot;
