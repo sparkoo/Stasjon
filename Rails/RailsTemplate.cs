@@ -4,7 +4,7 @@ using Godot;
 public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
   public event ItemClicked objectClicked;
 
-  [Export] public PlayColor color { get; set; } = PlayColor.NONE;
+  [Export] public PlayColor color { get; private set; } = PlayColor.NONE;
 
   private SpatialMaterial material;
 

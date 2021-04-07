@@ -5,6 +5,8 @@ public class Path {
   public PlayColor color { get; }
   public PathElement startDepot { get; set; }
   public PathElement endDepot { get; set; }
+  public TrainTemplate train { get; set; }
+  public bool complete { get; private set; }
 
   public Path(PlayColor color) {
     this.color = color;
@@ -19,7 +21,13 @@ public class Path {
     if (current.next != null) {
       cleanPath(current.next);
     }
-    current.next = new PathElement(to, obj);
+    if (to == endDepot.index) {
+      GD.Print(string.Format("'{0}' PAth complete, \\o/", color));
+      train.chooChoo();
+      current.next = endDepot;
+    } else {
+      current.next = new PathElement(to, obj);
+    }
   }
 
   public void cleanPath(PathElement pathElement) {

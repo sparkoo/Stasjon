@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Levels/Level4x4.tscn" type="PackedScene" id=1]
 [ext_resource path="res://Depot/DepotBlue.tscn" type="PackedScene" id=2]
 [ext_resource path="res://Trains/TrainBlue.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Depot/DepotRed.tscn" type="PackedScene" id=4]
+[ext_resource path="res://Trains/TrainRed.tscn" type="PackedScene" id=5]
 
 [node name="Level" instance=ExtResource( 1 )]
 
@@ -23,7 +24,10 @@ depotType = 1
 [node name="DepotRed" parent="Field/Tile7/Items" index="0" instance=ExtResource( 4 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 0 )
 
-[node name="TrainBlue" parent="Trains" index="0" instance=ExtResource( 3 )]
+[node name="TrainRed" parent="Trains" index="0" instance=ExtResource( 5 )]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0.3, 1 )
+
+[node name="TrainBlue" parent="Trains" index="1" instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.3, 0 )
 
 [editable path="Field/Tile0"]

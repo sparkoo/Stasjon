@@ -1,4 +1,4 @@
 public interface PlayObject {
-  PlayColor getColor();
+  public PlayColor color { get; }
   void QueueFree();
 }

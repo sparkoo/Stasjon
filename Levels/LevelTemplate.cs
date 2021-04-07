@@ -58,11 +58,16 @@ public class LevelTemplate : Node {
         }
       }
     }
+
+    foreach (TrainTemplate train in GetNode("Trains").GetChildren()) {
+      paths[train.color].train = train;
+    }
     printPaths();
   }
 
+  //TODO: refactor
   private void clickedTile(PathBuildElement pathElement) {
-    GD.Print(String.Format("Level -> clicked on [{0}] selected: '{1}'", pathElement, selected));
+    GD.Print(String.Format("Level -> clicked on [{0}] from selected: '{1}'", pathElement, selected));
 
     // do we have anything selected?
     if (selected == null) {
@@ -82,7 +87,6 @@ public class LevelTemplate : Node {
           paths[originalColor.Value].cleanPathIncluding(clickedIndex.Value);
         }
 
-        // get the color of selected
         var color = tiles[selected.Value].getItemColor();
         if (color != null) {
           GD.Print("build next block at ", clickedIndex);
@@ -90,10 +94,11 @@ public class LevelTemplate : Node {
           tiles[clickedIndex.Value].placeItem(newRails);
           paths[color.Value].add(selected.Value, clickedIndex.Value, newRails);
 
-
+          // clear selections
           tiles[selected.Value].cancelSelect();
           cancelSelectCandidates(selected.Value);
 
+          // select next candidates
           selected = clickedIndex;
           tiles[selected.Value].select(false);
           selectCandidates(selected.Value);
@@ -145,23 +150,49 @@ public class LevelTemplate : Node {
   private IList<int> nextCandidates(int i) {
     var nextCandidates = new List<int>();
 
-    if (i - 1 >= 0 && (i) % cols != 0 && !tiles[i - 1].hasDepot) {
-      nextCandidates.Add(i - 1);
+    // check if neighbours are 
+
+    // one left
+    int ci = i - 1;
+    if (ci >= 0 && (ci + 1) % cols != 0) {
+      add(ci);
     }
 
-    if (i + 1 < cols * rows && (i + 1) % cols != 0 && !tiles[i + 1].hasDepot) {
-      nextCandidates.Add(i + 1);
+    // one right
+    ci = i + 1;
+    if (ci < cols * rows && (ci) % cols != 0) {
+      add(ci);
     }
 
-    if (i + cols < N() && !tiles[i + cols].hasDepot) {
-      nextCandidates.Add(i + cols);
+    // one down
+    ci = i + cols;
+    if (ci < N()) {
+      add(ci);
     }
 
-    if (i - cols >= 0 && !tiles[i - cols].hasDepot) {
-      nextCandidates.Add(i - cols);
+    // one up
+    ci = i - cols;
+    if (ci >= 0) {
+      add(ci);
     }
 
     return nextCandidates;
+
+    void add(int ci) {
+      if (!tiles[ci].hasDepot || (tiles[ci].hasDepot && isEndDepot(ci))) {
+        nextCandidates.Add(ci);
+      }
+    }
+  }
+
+  private bool isEndDepot(int i) {
+    var color = tiles[selected.Value].getItemColor();
+    if (color.HasValue) {
+      if (tiles[i].hasDepot && tiles[i].getItemColor().Value == color.Value) {
+        return true;
+      }
+    }
+    return false;
   }
 
   private int N() {

@@ -4,7 +4,7 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
   public event ItemClicked objectClicked;
 
   [Export] private string name = "";
-  [Export] public PlayColor color { get; set; } = PlayColor.NONE;
+  [Export] public PlayColor color { get; private set; } = PlayColor.NONE;
   [Export] public DepotType depotType { get; private set; } = DepotType.START;
 
   private bool selected = false;
@@ -19,10 +19,12 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        if (depotType == DepotType.START) {
-          GD.Print("invoke DepotTemplate.clicked()");
-          objectClicked?.Invoke(new PathBuildElement(color, null));
-        }
+        // if (depotType == DepotType.START) {
+        GD.Print("invoke DepotTemplate.clicked()");
+        objectClicked?.Invoke(new PathBuildElement(color, null));
+        // } else {
+        // GD.Print("clicked on end depot");
+        // }
       }
     }
   }

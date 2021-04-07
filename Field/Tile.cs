@@ -13,7 +13,7 @@ public partial class Tile : Spatial, ClickableItem {
   public DepotTemplate depot { get; private set; }
 
   public override void _Ready() {
-    this.Connect("input_event", this, nameof(clicked));
+    this.Connect("input_event", this, nameof(clickedOnEmptyTile));
 
     index = int.Parse(Name.Substring("Tile".Length));
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
@@ -27,7 +27,7 @@ public partial class Tile : Spatial, ClickableItem {
     randomizeGround();
   }
 
-  private void clicked(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
+  private void clickedOnEmptyTile(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
@@ -88,7 +88,7 @@ public partial class Tile : Spatial, ClickableItem {
 
   public PlayColor? getItemColor() {
     foreach (PlayObject item in GetNode("Items").GetChildren()) {
-      return item.getColor();
+      return item.color;
     }
 
     return null;
