@@ -68,6 +68,17 @@ public partial class Tile : Spatial, ClickableItem {
 
   }
 
+  public bool hasSelectableItem() {
+    Godot.Collections.Array items = GetNode("Items").GetChildren();
+    if (hasDepot && depot.depotType == DepotType.END) {
+      return false;
+    }
+    if (items.Count > 0) {
+      return true;
+    }
+    return false;
+  }
+
   public void select(bool highlightThis = true) {
     // highlight(highlightThis);
     material.EmissionEnabled = highlightThis;

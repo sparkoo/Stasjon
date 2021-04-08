@@ -71,7 +71,7 @@ public class LevelTemplate : Node {
 
     // do we have anything selected?
     if (selected == null) {
-      if (pathElement.color.HasValue) {
+      if (tiles[pathElement.index.Value].hasSelectableItem()) {
         tiles[pathElement.index.Value].select(false);
         selected = pathElement.index;
         selectCandidates(selected.Value);
@@ -105,7 +105,7 @@ public class LevelTemplate : Node {
         } else {
           throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
         }
-      } else if (pathElement.color.HasValue) {  // clicked on new item
+      } else if (tiles[pathElement.index.Value].hasSelectableItem()) {  // clicked on new item
         tiles[selected.Value].cancelSelect();
         cancelSelectCandidates(selected.Value);
 
