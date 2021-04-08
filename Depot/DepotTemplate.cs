@@ -19,12 +19,7 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
       if (click.Pressed) {
-        // if (depotType == DepotType.START) {
-        GD.Print("invoke DepotTemplate.clicked()");
         objectClicked?.Invoke(new PathBuildElement(color, null));
-        // } else {
-        // GD.Print("clicked on end depot");
-        // }
       }
     }
   }
