@@ -72,7 +72,7 @@ public class LevelTemplate : Node {
     // do we have anything selected?
     if (selected == null) {
       if (pathElement.color.HasValue) {
-        tiles[pathElement.index.Value].select();
+        tiles[pathElement.index.Value].select(false);
         selected = pathElement.index;
         selectCandidates(selected.Value);
       }
@@ -109,7 +109,7 @@ public class LevelTemplate : Node {
         tiles[selected.Value].cancelSelect();
         cancelSelectCandidates(selected.Value);
 
-        tiles[pathElement.index.Value].select();
+        tiles[pathElement.index.Value].select(false);
         selected = pathElement.index;
         paths[pathElement.color.Value].cleanPath(selected.Value);
         selectCandidates(selected.Value);

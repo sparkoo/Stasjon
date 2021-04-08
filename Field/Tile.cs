@@ -52,11 +52,7 @@ public partial class Tile : Spatial, ClickableItem {
   private void clickedOnObject(PathBuildElement pathElement) {
     GD.Print("invoke Tile.clickedOnObject");
     objectClicked?.Invoke(new PathBuildElement(pathElement.color, index));
-    highlight(!material.EmissionEnabled);
-  }
-
-  private void highlight(bool highlight) {
-    material.EmissionEnabled = highlight;
+    // highlight(!material.EmissionEnabled);
   }
 
   private void randomizeGround() {
@@ -73,14 +69,15 @@ public partial class Tile : Spatial, ClickableItem {
   }
 
   public void select(bool highlightThis = true) {
-    highlight(highlightThis);
+    // highlight(highlightThis);
+    material.EmissionEnabled = highlightThis;
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.select();
     }
   }
 
   public void cancelSelect() {
-    highlight(false);
+    material.EmissionEnabled = false;
     foreach (ClickableItem item in GetNode("Items").GetChildren()) {
       item.cancelSelect();
     }
