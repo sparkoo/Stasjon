@@ -31,6 +31,9 @@ public class Path {
   }
 
   public void cleanPath(PathElement pathElement) {
+    if (pathElement.item is DepotTemplate) {
+      return;
+    }
     var next = pathElement.next;
     pathElement.item.QueueFree();
     if (next != null) {
