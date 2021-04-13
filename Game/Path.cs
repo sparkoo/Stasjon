@@ -9,6 +9,7 @@ public class Path {
   public PlayColor color { get; }
   public PathElement startDepot { get; set; }
   public PathElement endDepot { get; set; }
+  public bool complete { get; private set; }
 
   public Path(PlayColor color) {
     this.color = color;
@@ -25,7 +26,7 @@ public class Path {
     }
     if (to == endDepot.index) { // build to the end depot => path is complete
       current.next = endDepot;
-      pathCompleteEvent?.Invoke(true, color);
+      completePath(true);
     } else {
       current.next = new PathElement(to, obj);
     }
@@ -55,7 +56,12 @@ public class Path {
 
   private void cutPathFrom(PathElement pathElement) {
     cleanPath(pathElement);
-    pathCompleteEvent?.Invoke(false, color);
+    completePath(false);
+  }
+
+  private void completePath(bool complete) {
+    this.complete = complete;
+    pathCompleteEvent?.Invoke(complete, color);
   }
 
   // recursively cut the path from given element

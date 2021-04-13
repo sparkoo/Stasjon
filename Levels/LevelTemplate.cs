@@ -208,9 +208,27 @@ public class LevelTemplate : Node {
     GD.Print("pathCompleteChanged");
     if (complete) {
       getTrain(color).chooChoo();
+      if (checkAllPathsCompeted()) {
+        levelComplete();
+      }
     } else {
       getTrain(color).chooChoo(false);
     }
+  }
+
+  private bool checkAllPathsCompeted() {
+    foreach (var path in paths.Values) {
+      if (!path.complete) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
+  private void levelComplete() {
+    GD.Print("WIN \\o/");
+    // TODO: run trains to end depots, block level, GUI to next level
   }
 
   private TrainTemplate getTrain(PlayColor color) {
