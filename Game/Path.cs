@@ -1,12 +1,14 @@
 using Godot;
 using System.Collections.Generic;
 
+public delegate void PathCompleteChanged(bool complete, PlayColor color);
+
 public class Path {
+  public event PathCompleteChanged pathCompleteEvent;
+
   public PlayColor color { get; }
   public PathElement startDepot { get; set; }
   public PathElement endDepot { get; set; }
-  public TrainTemplate train { get; set; }
-  public bool complete { get; private set; }
 
   public Path(PlayColor color) {
     this.color = color;
@@ -21,45 +23,55 @@ public class Path {
     if (current.next != null) {
       cleanPath(current.next);
     }
-    if (to == endDepot.index) {
-      GD.Print(string.Format("'{0}' PAth complete, \\o/", color));
-      train.chooChoo();
+    if (to == endDepot.index) { // build to the end depot => path is complete
       current.next = endDepot;
+      pathCompleteEvent?.Invoke(true, color);
     } else {
       current.next = new PathElement(to, obj);
     }
   }
 
-  public void cleanPath(PathElement pathElement) {
-    if (pathElement.item is DepotTemplate) {
-      return;
-    }
-    var next = pathElement.next;
-    pathElement.item.QueueFree();
-    if (next != null) {
-      cleanPath(next);
-    }
-  }
-
-  public void cleanPath(int i) {
+  public void cutPath(int i) {
     var current = startDepot;
     while (current.index != i && current.next != null) {
       current = current.next;
     }
     if (current.next != null) {
-      cleanPath(current.next);
+      cutPathFrom(current.next);
       current.next = null;
     }
   }
 
-  public void cleanPathIncluding(int i) {
+  public void cutPathIncluding(int i) {
     var current = startDepot;
     while (current.next != null && current.next.index != i) {
       current = current.next;
     }
     if (current.next != null) {
-      cleanPath(current.next);
+      cutPathFrom(current.next);
       current.next = null;
+    }
+  }
+
+  private void cutPathFrom(PathElement pathElement) {
+    cleanPath(pathElement);
+    pathCompleteEvent?.Invoke(false, color);
+  }
+
+  // recursively cut the path from given element
+  private void cleanPath(PathElement pathElement) {
+    // don't clean depot
+    if (pathElement.item is DepotTemplate) {
+      return;
+    }
+
+    // clean itself
+    pathElement.item.QueueFree();
+
+    // take next and clean it
+    var next = pathElement.next;
+    if (next != null) {
+      cleanPath(next);
     }
   }
 

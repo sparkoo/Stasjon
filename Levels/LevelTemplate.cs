@@ -59,9 +59,10 @@ public class LevelTemplate : Node {
       }
     }
 
-    foreach (TrainTemplate train in GetNode("Trains").GetChildren()) {
-      paths[train.color].train = train;
+    foreach (Path path in paths.Values) {
+      path.pathCompleteEvent += pathCompleteChanged;
     }
+
     printPaths();
   }
 
@@ -84,15 +85,23 @@ public class LevelTemplate : Node {
         GD.Print("clicked on candidate");
         var originalColor = tiles[clickedIndex.Value].getItemColor();
         if (originalColor.HasValue) {
-          paths[originalColor.Value].cleanPathIncluding(clickedIndex.Value);
+          paths[originalColor.Value].cutPathIncluding(clickedIndex.Value);
         }
 
         var color = tiles[selected.Value].getItemColor();
         if (color != null) {
           GD.Print("build next block at ", clickedIndex);
-          var newRails = (RailsTemplate)railsRes[color.Value].Instance();
-          tiles[clickedIndex.Value].placeItem(newRails);
-          paths[color.Value].add(selected.Value, clickedIndex.Value, newRails);
+
+          // prepare new rails or go to depot
+          PlayObject newBlockItem;
+          if (tiles[clickedIndex.Value].hasDepot) {
+            newBlockItem = tiles[clickedIndex.Value].depot;
+          } else {
+            newBlockItem = (RailsTemplate)railsRes[color.Value].Instance();
+            tiles[clickedIndex.Value].placeItem((Node)newBlockItem);
+          }
+
+          paths[color.Value].add(selected.Value, clickedIndex.Value, newBlockItem);
 
           // clear selections
           tiles[selected.Value].cancelSelect();
@@ -111,11 +120,11 @@ public class LevelTemplate : Node {
 
         tiles[pathElement.index.Value].select(false);
         selected = pathElement.index;
-        paths[pathElement.color.Value].cleanPath(selected.Value);
+        paths[pathElement.color.Value].cutPath(selected.Value);
         selectCandidates(selected.Value);
       }
     }
-    printPaths();
+    // printPaths();
   }
 
   private int? clickedOnCandidate(int clickedIndex) {
@@ -193,6 +202,24 @@ public class LevelTemplate : Node {
       }
     }
     return false;
+  }
+
+  private void pathCompleteChanged(bool complete, PlayColor color) {
+    GD.Print("pathCompleteChanged");
+    if (complete) {
+      getTrain(color).chooChoo();
+    } else {
+      getTrain(color).chooChoo(false);
+    }
+  }
+
+  private TrainTemplate getTrain(PlayColor color) {
+    foreach (TrainTemplate train in GetNode("Trains").GetChildren()) {
+      if (train.color == color) {
+        return train;
+      }
+    }
+    return null;
   }
 
   private int N() {

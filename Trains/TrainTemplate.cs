@@ -7,7 +7,7 @@ public class TrainTemplate : KinematicBody, PlayObject {
   public override void _Ready() {
   }
 
-  public void chooChoo() {
-    ((Particles)GetNode("Smoke")).Emitting = true;
+  public void chooChoo(bool emit = true) {
+    ((Particles)GetNode("Smoke")).Emitting = emit;
   }
 }
