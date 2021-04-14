@@ -72,7 +72,9 @@ public class Path {
     }
 
     // clean itself
-    pathElement.item.QueueFree();
+    Node pathItem = (Node)pathElement.item;
+    pathItem.GetParent().RemoveChild(pathItem);
+    pathItem.QueueFree();
 
     // take next and clean it
     var next = pathElement.next;
