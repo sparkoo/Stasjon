@@ -197,7 +197,8 @@ public class LevelTemplate : Node {
     return nextCandidates;
 
     void add(int ci) {
-      if (!tiles[ci].hasDepot || (tiles[ci].hasDepot && isEndDepot(ci))) {
+      if ((!tiles[ci].hasDepot && tiles[ci].getItemColor() != tiles[selected.Value].getItemColor()) ||
+      (tiles[ci].hasDepot && isEndDepot(ci))) {
         nextCandidates.Add(ci);
       }
     }
@@ -206,7 +207,7 @@ public class LevelTemplate : Node {
   private bool isEndDepot(int i) {
     var color = tiles[selected.Value].getItemColor();
     if (color.HasValue) {
-      if (tiles[i].hasDepot && tiles[i].getItemColor().Value == color.Value) {
+      if (tiles[i].hasDepot && tiles[i].getItemColor().Value == color.Value && tiles[i].depot.depotType == DepotType.END) {
         return true;
       }
     }
