@@ -9,5 +9,6 @@ public class TrainTemplate : KinematicBody, PlayObject {
 
   public void chooChoo(bool emit = true) {
     ((Particles)GetNode("Smoke")).Emitting = emit;
+    ((Particles)GetNode("Smoke2")).Emitting = emit;
   }
 }
