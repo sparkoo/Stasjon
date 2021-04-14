@@ -116,8 +116,8 @@ public class LevelTemplate : Node {
 
           // select next candidates
           selected = clickedIndex;
-          tiles[selected.Value].select(false);
           if (!(tiles[selected.Value].hasDepot && tiles[selected.Value].depot.depotType == DepotType.END)) {
+            tiles[selected.Value].select(false);
             selectCandidates(selected.Value);
           }
         } else {
