@@ -6,6 +6,8 @@ public class LevelTemplate : Node {
   [Export] private int cols;
   [Export] private int rows;
 
+  private bool complete = false;
+
   Dictionary<PlayColor, PackedScene> railsRes = new Dictionary<PlayColor, PackedScene>() {
     {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn")},
     {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsStraightRed.tscn")}
@@ -68,6 +70,11 @@ public class LevelTemplate : Node {
 
   //TODO: refactor
   private void clickedTile(PathBuildElement pathElement) {
+    if (complete) {
+      GD.Print("Hey, you've finished the level. Relax!");
+      return;
+    }
+
     GD.Print(String.Format("Level -> clicked on [{0}] from selected: '{1}'", pathElement, selected));
 
     // do we have anything selected?
@@ -110,7 +117,9 @@ public class LevelTemplate : Node {
           // select next candidates
           selected = clickedIndex;
           tiles[selected.Value].select(false);
-          selectCandidates(selected.Value);
+          if (!(tiles[selected.Value].hasDepot && tiles[selected.Value].depot.depotType == DepotType.END)) {
+            selectCandidates(selected.Value);
+          }
         } else {
           throw new Exception(string.Format("this shoud not happen. We should be on block with item on it with color. We're on '{0}'", selected));
         }
@@ -228,6 +237,7 @@ public class LevelTemplate : Node {
 
   private void levelComplete() {
     GD.Print("WIN \\o/");
+    complete = true;
     // TODO: run trains to end depots, block level, GUI to next level
   }
 
