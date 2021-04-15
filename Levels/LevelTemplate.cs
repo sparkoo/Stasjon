@@ -19,7 +19,11 @@ public class LevelTemplate : Node {
 
   private Godot.Collections.Array<Tile> tiles = new Godot.Collections.Array<Tile>();
 
+  private PathBuilder pathBuilder;
+
   public override void _Ready() {
+    pathBuilder = new PathBuilder(cols, rows, tiles);
+
     foreach (Tile tile in GetNode("Field").GetChildren()) {
       tiles.Add(tile);
     }
@@ -137,7 +141,7 @@ public class LevelTemplate : Node {
   }
 
   private int? clickedOnCandidate(int clickedIndex) {
-    foreach (int c in nextCandidates(selected.Value)) {
+    foreach (int c in pathBuilder.nextCandidates(selected.Value)) {
       if (c == clickedIndex) {
         return c;
       }
@@ -154,64 +158,15 @@ public class LevelTemplate : Node {
   }
 
   private void selectCandidates(int i) {
-    foreach (int candidateIndex in nextCandidates(i)) {
+    foreach (int candidateIndex in pathBuilder.nextCandidates(i)) {
       tiles[candidateIndex].select();
     }
   }
 
   private void cancelSelectCandidates(int i) {
-    foreach (int candidateIndex in nextCandidates(i)) {
+    foreach (int candidateIndex in pathBuilder.nextCandidates(i)) {
       tiles[candidateIndex].cancelSelect();
     }
-  }
-
-  private IList<int> nextCandidates(int i) {
-    var nextCandidates = new List<int>();
-
-    // check if neighbours are 
-
-    // one left
-    int ci = i - 1;
-    if (ci >= 0 && (ci + 1) % cols != 0) {
-      add(ci);
-    }
-
-    // one right
-    ci = i + 1;
-    if (ci < cols * rows && (ci) % cols != 0) {
-      add(ci);
-    }
-
-    // one down
-    ci = i + cols;
-    if (ci < N()) {
-      add(ci);
-    }
-
-    // one up
-    ci = i - cols;
-    if (ci >= 0) {
-      add(ci);
-    }
-
-    return nextCandidates;
-
-    void add(int ci) {
-      if ((!tiles[ci].hasDepot && tiles[ci].getItemColor() != tiles[selected.Value].getItemColor()) ||
-      (tiles[ci].hasDepot && isEndDepot(ci))) {
-        nextCandidates.Add(ci);
-      }
-    }
-  }
-
-  private bool isEndDepot(int i) {
-    var color = tiles[selected.Value].getItemColor();
-    if (color.HasValue) {
-      if (tiles[i].hasDepot && tiles[i].getItemColor().Value == color.Value && tiles[i].depot.depotType == DepotType.END) {
-        return true;
-      }
-    }
-    return false;
   }
 
   private void pathCompleteChanged(bool complete, PlayColor color) {
@@ -249,9 +204,5 @@ public class LevelTemplate : Node {
       }
     }
     return null;
-  }
-
-  private int N() {
-    return cols * rows;
   }
 }
