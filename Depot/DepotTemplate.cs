@@ -7,6 +7,9 @@ public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
   [Export] public PlayColor color { get; private set; } = PlayColor.NONE;
   [Export] public DepotType depotType { get; private set; } = DepotType.START;
 
+  //TODO: don't set manually but calculate from rotation
+  [Export] public Direction direction { get; private set; }
+
   private bool selected = false;
   private SpatialMaterial material;
 

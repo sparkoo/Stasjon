@@ -17,38 +17,58 @@ public class PathBuilder {
   public IList<int> nextCandidates(int i) {
     var nextCandidates = new List<int>();
 
-    // check if neighbours are 
+    if (tiles[i].hasDepot) {
+      var direction = tiles[i].depot.direction;
+      switch (direction) {
+        case Direction.LEFT:
+          add(i, i - 1);
+          break;
+        case Direction.RIGHT:
+          add(i, i + 1);
+          break;
+        case Direction.UP:
+          add(i, i - cols);
+          break;
+        case Direction.DOWN:
+          add(i, i - cols);
+          break;
+        default:
+          throw new System.Exception(string.Format("WTH is direction here? '{0}'", direction));
+      }
+    } else {
+      // check if neighbours are
 
-    // one left
-    int ci = i - 1;
-    if (ci >= 0 && (ci + 1) % cols != 0) {
-      add(i, ci);
-    }
+      // one left
+      int ci = i - 1;
+      if (ci >= 0 && (ci + 1) % cols != 0) {
+        add(i, ci);
+      }
 
-    // one right
-    ci = i + 1;
-    if (ci < cols * rows && (ci) % cols != 0) {
-      add(i, ci);
-    }
+      // one right
+      ci = i + 1;
+      if (ci < cols * rows && (ci) % cols != 0) {
+        add(i, ci);
+      }
 
-    // one down
-    ci = i + cols;
-    if (ci < N) {
-      add(i, ci);
-    }
+      // one down
+      ci = i + cols;
+      if (ci < N) {
+        add(i, ci);
+      }
 
-    // one up
-    ci = i - cols;
-    if (ci >= 0) {
-      add(i, ci);
+      // one up
+      ci = i - cols;
+      if (ci >= 0) {
+        add(i, ci);
+      }
     }
 
     return nextCandidates;
 
     void add(int selected, int candidateIndex) {
-      if ((!tiles[ci].hasDepot && tiles[ci].getItemColor() != tiles[selected].getItemColor()) ||
-      (tiles[ci].hasDepot && isEndDepot(selected, ci))) {
-        nextCandidates.Add(ci);
+      if ((!tiles[candidateIndex].hasDepot && tiles[candidateIndex].getItemColor() != tiles[selected].getItemColor()) ||
+      (tiles[candidateIndex].hasDepot && isEndDepot(selected, candidateIndex))) {
+        nextCandidates.Add(candidateIndex);
       }
     }
   }
