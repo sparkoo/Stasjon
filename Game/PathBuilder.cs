@@ -20,6 +20,8 @@ public class PathBuilder {
 
     if (tiles[i].hasDepot) {
       var direction = tiles[i].depot.direction;
+      // we do not care if we're out of field. So hopefuly we do not put the depot in unreachable direction which would cause crash.
+      // TODO: check?
       switch (direction) {
         case Direction.LEFT:
           add(i, i - 1);
@@ -80,18 +82,33 @@ public class PathBuilder {
       }
 
       bool isEndDepotOfSameColor() {
-        return tiles[candidateIndex].hasDepot && isEndDepot(selected, candidateIndex);
-      }
-    }
-  }
+        return tiles[candidateIndex].hasDepot && isEndDepot();
 
-  private bool isEndDepot(int selected, int i) {
-    var color = tiles[selected].getItemColor();
-    if (color.HasValue) {
-      if (tiles[i].hasDepot && tiles[i].getItemColor().Value == color.Value && tiles[i].depot.depotType == DepotType.END) {
-        return true;
+        bool isEndDepot() {
+          var color = tiles[selected].getItemColor();
+          if (color.HasValue) {
+            if (tiles[candidateIndex].hasDepot &&
+            tiles[candidateIndex].getItemColor().Value == color.Value &&
+            tiles[candidateIndex].depot.depotType == DepotType.END) {
+              // the candidate is end depot of correct color, but are we from correct direction?
+              var depotDirection = tiles[candidateIndex].depot.direction;
+              switch (depotDirection) {
+                case Direction.LEFT:
+                  return selected + 1 == candidateIndex;
+                case Direction.RIGHT:
+                  return selected - 1 == candidateIndex;
+                case Direction.UP:
+                  return selected - cols == candidateIndex;
+                case Direction.DOWN:
+                  return selected + cols == candidateIndex;
+                default:
+                  throw new System.Exception(string.Format("WTH is direction here? '{0}'", depotDirection));
+              }
+            }
+          }
+          return false;
+        }
       }
     }
-    return false;
   }
 }
