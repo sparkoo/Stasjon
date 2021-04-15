@@ -14,6 +14,7 @@ public class PathBuilder {
     this.tiles = tiles;
   }
 
+  // list of possible candidates for tile in given index `i`
   public IList<int> nextCandidates(int i) {
     var nextCandidates = new List<int>();
 
@@ -65,10 +66,21 @@ public class PathBuilder {
 
     return nextCandidates;
 
+    // include the candidate only if
+    // - empty tile
+    // - rails of different color
+    // - end depot of selected color
     void add(int selected, int candidateIndex) {
-      if ((!tiles[candidateIndex].hasDepot && tiles[candidateIndex].getItemColor() != tiles[selected].getItemColor()) ||
-      (tiles[candidateIndex].hasDepot && isEndDepot(selected, candidateIndex))) {
+      if (isRailsOfDifferentColorOrEmpty() || isEndDepotOfSameColor()) {
         nextCandidates.Add(candidateIndex);
+      }
+
+      bool isRailsOfDifferentColorOrEmpty() {
+        return !tiles[candidateIndex].hasDepot && tiles[candidateIndex].getItemColor() != tiles[selected].getItemColor();
+      }
+
+      bool isEndDepotOfSameColor() {
+        return tiles[candidateIndex].hasDepot && isEndDepot(selected, candidateIndex);
       }
     }
   }
