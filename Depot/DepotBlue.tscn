@@ -8,5 +8,5 @@ albedo_color = Color( 0, 0, 1, 1 )
 [node name="DepotBlue" instance=ExtResource( 1 )]
 color = 1
 
-[node name="DepotMesh" parent="." index="0"]
+[node name="DepotMesh" parent="." index="1"]
 material/0 = SubResource( 1 )

@@ -10,7 +10,7 @@ public class MaterialUtils {
   }
 
   public static void uniqueMaterialWithClickableEmission(MeshInstance mesh, out SpatialMaterial material) {
-    // copy the material to be able to set different seeds
+    // copy the material to be able to set different seedssss
     material = (SpatialMaterial)mesh.GetSurfaceMaterial(0).Duplicate(true);
     MaterialUtils.setClickableEmission(material);
 
