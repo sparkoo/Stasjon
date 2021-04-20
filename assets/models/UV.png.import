@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/DepotModelUV.png-d0cc25af47912835c227e4db9e77e14c.stex"
+path="res://.import/UV.png-19c37e371a5a5e9b78522094129f0f18.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/models/DepotModelUV.png"
-dest_files=[ "res://.import/DepotModelUV.png-d0cc25af47912835c227e4db9e77e14c.stex" ]
+source_file="res://assets/models/UV.png"
+dest_files=[ "res://.import/UV.png-19c37e371a5a5e9b78522094129f0f18.stex" ]
 
 [params]
 
@@ -23,12 +23,12 @@ flags/repeat=0
 flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=1
 process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

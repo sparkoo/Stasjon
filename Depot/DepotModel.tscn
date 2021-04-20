@@ -1,12 +1,8 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=2 format=2]
 
 [ext_resource path="res://Depot/DepotMesh.tres" type="ArrayMesh" id=1]
-[ext_resource path="res://assets/models/UV.png" type="Texture" id=2]
-
-[sub_resource type="SpatialMaterial" id=1]
-albedo_texture = ExtResource( 2 )
 
 [node name="DepotModel" type="MeshInstance"]
 transform = Transform( 0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.5, 0 )
 mesh = ExtResource( 1 )
-material/0 = SubResource( 1 )
+material/0 = null
