@@ -8,9 +8,9 @@ public class LevelTemplate : Node {
 
   private bool complete = false;
 
-  Dictionary<PlayColor, PackedScene> railsRes = new Dictionary<PlayColor, PackedScene>() {
-    {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn")},
-    {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsStraightRed.tscn")}
+  Dictionary<PlayColor, PackedScene> constructionRailsRes = new Dictionary<PlayColor, PackedScene>() {
+    {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsConstructionBlue.tscn")},
+    {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsConstructionRed.tscn")}
   };
 
   private IDictionary<PlayColor, Path> paths = new Dictionary<PlayColor, Path>();
@@ -108,7 +108,7 @@ public class LevelTemplate : Node {
           if (tiles[clickedIndex.Value].hasDepot) {
             newBlockItem = tiles[clickedIndex.Value].depot;
           } else {
-            newBlockItem = (RailsTemplate)railsRes[color.Value].Instance();
+            newBlockItem = (RailsTemplate)constructionRailsRes[color.Value].Instance();
             tiles[clickedIndex.Value].placeItem((Node)newBlockItem);
           }
 
