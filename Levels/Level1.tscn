@@ -33,33 +33,18 @@ transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0, 1
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
 
 [editable path="Field/Tile0"]
-
 [editable path="Field/Tile1"]
-
 [editable path="Field/Tile2"]
-
 [editable path="Field/Tile3"]
-
 [editable path="Field/Tile4"]
-
 [editable path="Field/Tile5"]
-
 [editable path="Field/Tile6"]
-
 [editable path="Field/Tile7"]
-
 [editable path="Field/Tile8"]
-
 [editable path="Field/Tile9"]
-
 [editable path="Field/Tile10"]
-
 [editable path="Field/Tile11"]
-
 [editable path="Field/Tile12"]
-
 [editable path="Field/Tile13"]
-
 [editable path="Field/Tile14"]
-
 [editable path="Field/Tile15"]
