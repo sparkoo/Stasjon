@@ -35,7 +35,7 @@ public partial class Tile : Spatial, ClickableItem {
     }
   }
 
-  public void placeItem(Node o) {
+  public void placeItem(Spatial o) {
     GetNode("Items").AddChild(o);
     registerListener(o);
   }

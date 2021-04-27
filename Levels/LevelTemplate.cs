@@ -109,7 +109,8 @@ public class LevelTemplate : Node {
             newBlockItem = tiles[clickedIndex.Value].depot;
           } else {
             newBlockItem = (RailsTemplate)constructionRailsRes[color.Value].Instance();
-            tiles[clickedIndex.Value].placeItem((Node)newBlockItem);
+            rotateNewRails((Spatial)newBlockItem, selected.Value, clickedIndex.Value);
+            tiles[clickedIndex.Value].placeItem((Spatial)newBlockItem);
           }
 
           paths[color.Value].add(selected.Value, clickedIndex.Value, newBlockItem);
@@ -148,6 +149,17 @@ public class LevelTemplate : Node {
     }
 
     return null;
+  }
+
+  private void rotateNewRails(Spatial rails, int from, int to) {
+    var diff = to - from;
+    if (diff == 1) {
+      rails.Rotate(new Vector3(0, 1, 0), Utils.ConvertToRadians(90));
+    } else if (diff == -1) {
+      rails.Rotate(new Vector3(0, 1, 0), Utils.ConvertToRadians(-90));
+    } else if (diff < -1) {
+      rails.Rotate(new Vector3(0, 1, 0), Utils.ConvertToRadians(180));
+    }
   }
 
   private void printPaths() {
