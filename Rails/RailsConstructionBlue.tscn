@@ -6,6 +6,7 @@
 albedo_color = Color( 0.25098, 0.615686, 0.937255, 1 )
 
 [node name="RailsConstructionBlue" instance=ExtResource( 1 )]
+color = 1
 
 [node name="RailsMesh" parent="." index="1"]
 material/0 = SubResource( 1 )
