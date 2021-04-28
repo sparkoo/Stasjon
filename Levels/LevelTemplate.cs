@@ -123,6 +123,7 @@ public class LevelTemplate : Node {
           PlayObject newBlockItem;
           if (tiles[clickedIndex.Value].hasDepot) {
             newBlockItem = tiles[clickedIndex.Value].depot;
+            updateLastRail(selected.Value, clickedIndex.Value, color.Value);
           } else {
             newBlockItem = buildNewConstructionRails(clickedIndex.Value, color.Value);
           }
