@@ -13,6 +13,21 @@ public class LevelTemplate : Node {
     {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsConstructionRed.tscn")}
   };
 
+  Dictionary<PlayColor, PackedScene> straightRailsRes = new Dictionary<PlayColor, PackedScene>() {
+    {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsStraightBlue.tscn")},
+    {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsStraightRed.tscn")}
+  };
+
+  Dictionary<PlayColor, PackedScene> leftRailsRes = new Dictionary<PlayColor, PackedScene>() {
+    {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsLeftBlue.tscn")},
+    {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsLeftRed.tscn")}
+  };
+
+  Dictionary<PlayColor, PackedScene> rightRailsRes = new Dictionary<PlayColor, PackedScene>() {
+    {PlayColor.BLUE, (PackedScene)GD.Load("res://Rails/RailsRightBlue.tscn")},
+    {PlayColor.RED, (PackedScene)GD.Load("res://Rails/RailsRightRed.tscn")}
+  };
+
   private IDictionary<PlayColor, Path> paths = new Dictionary<PlayColor, Path>();
 
   private int? selected = null;
@@ -110,6 +125,7 @@ public class LevelTemplate : Node {
           } else {
             newBlockItem = (RailsTemplate)constructionRailsRes[color.Value].Instance();
             rotateNewRails((Spatial)newBlockItem, selected.Value, clickedIndex.Value);
+            updateLastRail(selected.Value, clickedIndex.Value, color.Value);
             tiles[clickedIndex.Value].placeItem((Spatial)newBlockItem);
           }
 
@@ -160,6 +176,52 @@ public class LevelTemplate : Node {
     } else if (diff < -1) {
       rails.Rotate(new Vector3(0, 1, 0), Utils.ConvertToRadians(180));
     }
+  }
+
+  private void updateLastRail(int updateI, int nextI, PlayColor color) {
+    if (!tiles[updateI].hasDepot) {
+      paths[color].cutPathIncluding(updateI);
+      var fromI = paths[color].last().index;
+
+      var newBlockItem = determineLastBlock(fromI, updateI, nextI, color);
+      rotateNewRails((Spatial)newBlockItem, fromI, updateI);
+
+      tiles[updateI].placeItem((Spatial)newBlockItem);
+      paths[color].add(fromI, updateI, newBlockItem);
+    }
+  }
+
+  private RailsTemplate determineLastBlock(int fromI, int currentI, int nextI, PlayColor color) {
+    // (RailsTemplate)straightRailsRes[color].Instance();
+
+    var diff = nextI - fromI;
+    var diffAbs = Math.Abs(diff);
+
+    // straight
+    if (diff == 2 || -diff == 2 || diff == 2 * cols || -diff == 2 * cols) {
+      return (RailsTemplate)straightRailsRes[color].Instance();
+    }
+
+    // right
+    if (diffAbs == cols - 1) {
+      if (Math.Abs(currentI - fromI) == cols) {
+        return (RailsTemplate)rightRailsRes[color].Instance();
+      } else if (Math.Abs(currentI - fromI) == 1) {
+        return (RailsTemplate)leftRailsRes[color].Instance();
+      }
+    }
+
+    if (diffAbs == cols + 1) {
+      if (Math.Abs(currentI - fromI) == cols) {
+        return (RailsTemplate)leftRailsRes[color].Instance();
+      } else if (Math.Abs(currentI - fromI) == 1) {
+        return (RailsTemplate)rightRailsRes[color].Instance();
+      }
+    }
+
+    throw new Exception(string.Format(@"This should not happen.
+    We didn't detect correct shape of rails when updating last path.
+    (fromI: '{0}', currentI: '{1}', nextI: '{2}', color: '{3}'", fromI, currentI, nextI, color));
   }
 
   private void printPaths() {

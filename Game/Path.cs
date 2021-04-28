@@ -15,6 +15,14 @@ public class Path {
     this.color = color;
   }
 
+  public PathElement last() {
+    var last = startDepot;
+    while (last.next != null) {
+      last = last.next;
+    }
+    return last;
+  }
+
   public void add(int from, int to, PlayObject obj) {
     var current = startDepot;
     while (current.next != null && current.index != from) {
