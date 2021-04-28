@@ -112,6 +112,7 @@ public class LevelTemplate : Node {
         var originalColor = tiles[clickedIndex.Value].getItemColor();
         if (originalColor.HasValue) {
           paths[originalColor.Value].cutPathIncluding(clickedIndex.Value);
+          makeLastBlockConstruction(originalColor.Value);
         }
 
         var color = tiles[selected.Value].getItemColor();
@@ -123,10 +124,7 @@ public class LevelTemplate : Node {
           if (tiles[clickedIndex.Value].hasDepot) {
             newBlockItem = tiles[clickedIndex.Value].depot;
           } else {
-            newBlockItem = (RailsTemplate)constructionRailsRes[color.Value].Instance();
-            rotateNewRails((Spatial)newBlockItem, selected.Value, clickedIndex.Value);
-            updateLastRail(selected.Value, clickedIndex.Value, color.Value);
-            tiles[clickedIndex.Value].placeItem((Spatial)newBlockItem);
+            newBlockItem = buildNewConstructionRails(clickedIndex.Value, color.Value);
           }
 
           paths[color.Value].add(selected.Value, clickedIndex.Value, newBlockItem);
@@ -151,10 +149,33 @@ public class LevelTemplate : Node {
         tiles[pathElement.index.Value].select(false);
         selected = pathElement.index;
         paths[pathElement.color.Value].cutPath(selected.Value);
+        makeLastBlockConstruction(pathElement.color.Value);
         selectCandidates(selected.Value);
       }
     }
     // printPaths();
+  }
+
+  private PlayObject buildNewConstructionRails(int tileIndex, PlayColor color) {
+    var newBlockItem = (RailsTemplate)constructionRailsRes[color].Instance();
+
+    rotateNewRails((Spatial)newBlockItem, selected.Value, tileIndex);
+    updateLastRail(selected.Value, tileIndex, color);
+    tiles[tileIndex].placeItem((Spatial)newBlockItem);
+
+    return newBlockItem;
+  }
+
+  private void makeLastBlockConstruction(PlayColor color) {
+    var lastElementIndex = paths[color].last().index;
+    paths[color].cutPathIncluding(lastElementIndex);
+
+
+    var newBlockItem = (RailsTemplate)constructionRailsRes[color].Instance();
+    rotateNewRails((Spatial)newBlockItem, paths[color].last().index, lastElementIndex);
+    tiles[lastElementIndex].placeItem((Spatial)newBlockItem);
+
+    paths[color].add(paths[color].last().index, lastElementIndex, newBlockItem);
   }
 
   private int? clickedOnCandidate(int clickedIndex) {
@@ -192,7 +213,10 @@ public class LevelTemplate : Node {
   }
 
   private RailsTemplate determineLastBlock(int fromI, int currentI, int nextI, PlayColor color) {
-    // (RailsTemplate)straightRailsRes[color].Instance();
+    // we're not building next block, so the last block should be construction
+    if (currentI == nextI) {
+      return (RailsTemplate)constructionRailsRes[color].Instance();
+    }
 
     var diff = nextI - fromI;
     var diffAbs = Math.Abs(diff);
