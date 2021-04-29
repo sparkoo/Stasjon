@@ -89,8 +89,13 @@ public class LevelTemplate : Node {
 
   //TODO: refactor
   private void clickedTile(PathBuildElement pathElement) {
+
     if (complete) {
-      GD.Print("Hey, you've finished the level. Relax!");
+      return;
+    }
+
+    // just holding over tile or clicked on same tile => do nothing
+    if (selected != null && pathElement.index == selected.Value) {
       return;
     }
 
@@ -269,7 +274,6 @@ public class LevelTemplate : Node {
   }
 
   private void pathCompleteChanged(bool complete, PlayColor color) {
-    GD.Print("pathCompleteChanged");
     if (complete) {
       getTrain(color).chooChoo();
       if (checkAllPathsCompeted()) {

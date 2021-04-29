@@ -29,7 +29,13 @@ public partial class Tile : Spatial, ClickableItem {
   private void clickedOnEmptyTile(Node camera, InputEvent @event, Vector3 click_position, Vector3 click_normal, int shape_idx) {
     if (@event is InputEventMouseButton) {
       var click = (InputEventMouseButton)@event;
+      // clicked on tile
       if (click.Pressed) {
+        objectClicked?.Invoke(new PathBuildElement(null, index));
+      }
+    } else if (@event is InputEventMouseMotion) {
+      var motion = (InputEventMouseMotion)@event;
+      if (motion.ButtonMask == (int)Godot.ButtonList.MaskLeft) {
         objectClicked?.Invoke(new PathBuildElement(null, index));
       }
     }
@@ -49,7 +55,6 @@ public partial class Tile : Spatial, ClickableItem {
   }
 
   private void clickedOnObject(PathBuildElement pathElement) {
-    GD.Print("invoke Tile.clickedOnObject");
     objectClicked?.Invoke(new PathBuildElement(pathElement.color, index));
     // highlight(!material.EmissionEnabled);
   }

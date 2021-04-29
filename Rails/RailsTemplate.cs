@@ -19,6 +19,11 @@ public partial class RailsTemplate : StaticBody, ClickableItem, PlayObject {
       if (click.Pressed) {
         objectClicked?.Invoke(new PathBuildElement(color, null));
       }
+    } else if (@event is InputEventMouseMotion) {
+      var motion = (InputEventMouseMotion)@event;
+      if (motion.ButtonMask == (int)Godot.ButtonList.MaskLeft) {
+        objectClicked?.Invoke(new PathBuildElement(color, null));
+      }
     }
   }
 
