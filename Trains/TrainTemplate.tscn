@@ -1,12 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Trains/TrainTemplate.cs" type="Script" id=1]
 [ext_resource path="res://Trains/SmokeParticle.tres" type="ArrayMesh" id=2]
 [ext_resource path="res://Trains/TrainModel.tscn" type="PackedScene" id=3]
-
-[sub_resource type="CapsuleShape" id=1]
-radius = 0.25
-height = 0.25
 
 [sub_resource type="ParticlesMaterial" id=2]
 lifetime_randomness = 0.5
@@ -28,12 +24,8 @@ angle_random = 1.0
 scale = 4.0
 scale_random = 0.5
 
-[node name="TrainTemplate" type="KinematicBody"]
+[node name="TrainTemplate" type="Spatial"]
 script = ExtResource( 1 )
-
-[node name="CollisionShape" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
-shape = SubResource( 1 )
 
 [node name="Smoke" type="Particles" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.635473, 0.223576 )

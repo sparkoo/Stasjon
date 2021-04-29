@@ -302,10 +302,7 @@ public class LevelTemplate : Node {
     complete = true;
     // TODO: run trains to end depots, block level, GUI to next level
     foreach (TrainTemplate train in GetNode("Trains").GetChildren()) {
-      StaticBody endDepot = (StaticBody)paths[train.color].endDepot.item;
-
-      // TODO: this is very unusable, trains just jump into end depots
-      train.go(endDepot.GlobalTransform);
+      train.go(paths[train.color].startDepot, paths[train.color].endDepot);
     }
   }
 
