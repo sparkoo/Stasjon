@@ -3,8 +3,11 @@ using System;
 using System.Collections.Generic;
 
 public class LevelTemplate : Node {
+#pragma warning disable 0649
+  // set in scene
   [Export] private int cols;
   [Export] private int rows;
+#pragma warning restore 0649
 
   private bool complete = false;
 

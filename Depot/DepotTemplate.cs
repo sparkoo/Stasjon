@@ -3,7 +3,6 @@ using Godot;
 public class DepotTemplate : StaticBody, ClickableItem, PlayObject {
   public event ItemClicked objectClicked;
 
-  [Export] private string name = "";
   [Export] public PlayColor color { get; private set; } = PlayColor.NONE;
   [Export] public DepotType depotType { get; private set; } = DepotType.START;
 
