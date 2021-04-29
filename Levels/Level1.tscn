@@ -16,19 +16,19 @@ direction = 1
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0.5, 0 )
 depotType = 1
 
-[node name="DepotRed" parent="Field/Tile4/Items" index="0" instance=ExtResource( 4 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0.5, -5.96046e-08 )
+[node name="DepotRed" parent="Field/Tile8/Items" index="0" instance=ExtResource( 4 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0.5, 0 )
 depotType = 1
 direction = 1
 
-[node name="DepotRed" parent="Field/Tile7/Items" index="0" instance=ExtResource( 4 )]
+[node name="DepotRed" parent="Field/Tile11/Items" index="0" instance=ExtResource( 4 )]
 transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0.5, 0 )
 
 [node name="TrainRed" parent="Trains" index="0" instance=ExtResource( 5 )]
-transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 3, 0, 1 )
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 0, 2 )
 
 [node name="TrainBlue" parent="Trains" index="1" instance=ExtResource( 3 )]
-transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0, 0 )
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0 )
 
 [editable path="Field/Tile0"]
 [editable path="Field/Tile1"]
