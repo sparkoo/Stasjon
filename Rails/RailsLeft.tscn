@@ -11,3 +11,18 @@ size = Vector3( 0.75, 0.05, 0.75 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0, -0.125 )
 mesh = SubResource( 1 )
 material/0 = null
+
+[node name="Nav1" type="Position3D" parent="NavPoints" index="0"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.5 )
+
+[node name="Nav2" type="Position3D" parent="NavPoints" index="1"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.043, 0, -0.307 )
+
+[node name="Nav3" type="Position3D" parent="NavPoints" index="2"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.146, 0, -0.148 )
+
+[node name="Nav4" type="Position3D" parent="NavPoints" index="3"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.306, 0, -0.041 )
+
+[node name="Nav5" type="Position3D" parent="NavPoints" index="4"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0 )
