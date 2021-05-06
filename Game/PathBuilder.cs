@@ -33,7 +33,7 @@ public class PathBuilder {
           add(i, i - cols);
           break;
         case Direction.DOWN:
-          add(i, i - cols);
+          add(i, i + cols);
           break;
         default:
           throw new System.Exception(string.Format("WTH is direction here? '{0}'", direction));
@@ -98,9 +98,9 @@ public class PathBuilder {
                 case Direction.RIGHT:
                   return selected - 1 == candidateIndex;
                 case Direction.UP:
-                  return selected - cols == candidateIndex;
-                case Direction.DOWN:
                   return selected + cols == candidateIndex;
+                case Direction.DOWN:
+                  return selected - cols == candidateIndex;
                 default:
                   throw new System.Exception(string.Format("WTH is direction here? '{0}'", depotDirection));
               }
