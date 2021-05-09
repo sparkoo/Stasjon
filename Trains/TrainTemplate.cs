@@ -1,7 +1,11 @@
 using System.Collections.Generic;
 using Godot;
 
+public delegate void Arrived(TrainTemplate train);
+
 public class TrainTemplate : Spatial, PlayObject {
+  public event Arrived arrived;
+
   [Export] public PlayColor color { get; private set; } = PlayColor.NONE;
 
   private readonly float SPEED = 0.5F;
@@ -31,6 +35,7 @@ public class TrainTemplate : Spatial, PlayObject {
         trainRoute.Dequeue();
         if (trainRoute.Count == 0) {
           GD.Print(string.Format("{0} train arrived to end depot", color));
+          arrived?.Invoke(this);
           move = false;
         }
       } else {

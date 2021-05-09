@@ -32,10 +32,10 @@ public class LevelTemplate : Node {
   };
 
   private IDictionary<PlayColor, Path> paths = new Dictionary<PlayColor, Path>();
+  private Godot.Collections.Array<Tile> tiles = new Godot.Collections.Array<Tile>();
+  private int trainsOnWay = 0;
 
   private int? selected = null;
-
-  private Godot.Collections.Array<Tile> tiles = new Godot.Collections.Array<Tile>();
 
   private PathBuilder pathBuilder;
 
@@ -300,9 +300,19 @@ public class LevelTemplate : Node {
   private void levelComplete() {
     GD.Print("WIN \\o/");
     complete = true;
-    // TODO: run trains to end depots, block level, GUI to next level
     foreach (TrainTemplate train in GetNode("Trains").GetChildren()) {
       train.go(paths[train.color].startDepot, paths[train.color].endDepot);
+      train.arrived += trainArrived;
+      trainsOnWay++;
+    }
+  }
+
+  private void trainArrived(TrainTemplate train) {
+    trainsOnWay--;
+    if (trainsOnWay == 0) {
+      GD.Print("Level done, next level.");
+      var game = (Game)GetNode("/root/Game");
+      game.nextLevel();
     }
   }
 
