@@ -8,21 +8,38 @@ public class Game : Node {
     "res://Levels/Level3.tscn",
     "res://Levels/Level4.tscn",
     "res://Levels/Level5.tscn",
+    // "res://Levels/LevelTest.tscn",
   };
 
-  private int currentLevel = 0;
+  private readonly string winGameScreen = "res://Game/WinGame.tscn";
+
+  private int currentLevel;
 
   public override void _Ready() {
+    startGame();
+  }
+
+  public void startGame(int level = 0) {
+    currentLevel = level;
     changeLevel(currentLevel);
   }
 
-  public void changeLevel(int level) {
+  public void exitGame() {
+    GetTree().Quit();
+  }
+
+  private void changeLevel(int level) {
     this.currentLevel = level;
     GetTree().ChangeScene(levels[currentLevel]);
   }
 
   public void nextLevel() {
-    changeLevel(currentLevel + 1);
+    if (currentLevel < levels.Count - 1) {
+      changeLevel(currentLevel + 1);
+    } else {
+      GD.Print("you won the game");
+      GetTree().ChangeScene(winGameScreen);
+    }
   }
 
   public override void _Input(InputEvent @event) {
